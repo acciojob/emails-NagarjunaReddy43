@@ -10,11 +10,13 @@ public class Gmail extends Email {
     int inboxCapacity; //maximum number of mails inbox can store
     //Inbox: Stores mails. Each mail has date (Date), sender (String), message (String). It is guaranteed that message is distinct for all mails.
     //Trash: Stores mails. Each mail has date (Date), sender (String), message (String)
-    ArrayList<Triple<Date,String,String>> inbox = new ArrayList<>();
-    ArrayList<Triple<Date,String,String>> trash = new ArrayList<>();
+    ArrayList<Triple<Date,String,String>> inbox;
+    ArrayList<Triple<Date,String,String>> trash;
     public Gmail(String emailId, int inboxCapacity) {
         super(emailId);
         this.inboxCapacity = Integer.MAX_VALUE;
+        this.inbox = new ArrayList<>();
+        this.trash = new ArrayList<>();
     }
 
     public void receiveMail(Date date, String sender, String message){
@@ -36,7 +38,7 @@ public class Gmail extends Email {
         // If the given message is found in any mail in the inbox, move the mail to trash, else do nothing
         int index = -1;
         for(int i=0;i<inbox.size();i++){
-            if(inbox.get(i).getRight().equals(message)){
+            if(message.equals(inbox.get(i).getRight())){
                 index = i;
                 break;
             }
@@ -51,7 +53,7 @@ public class Gmail extends Email {
     public String findLatestMessage(){
         // If the inbox is empty, return null
         // Else, return the message of the latest mail present in the inbox
-        if(inbox.size() == 0) return  null;
+        if(inbox.isEmpty()) return  null;
         int n = inbox.size();
         return inbox.get(n-1).getRight();
 
@@ -61,7 +63,7 @@ public class Gmail extends Email {
     public String findOldestMessage(){
         // If the inbox is empty, return null
         // Else, return the message of the oldest mail present in the inbox
-        if(inbox.size() == 0) return null;
+        if(inbox.isEmpty()) return null;
 
         return inbox.get(0).getRight();
 
@@ -70,7 +72,7 @@ public class Gmail extends Email {
     public int findMailsBetweenDates(Date start, Date end){
         //find number of mails in the inbox which are received between given dates
         //It is guaranteed that start date <= end date
-        int count  = 1;
+        int count  = 0;
 
         for(int i=0;i<inbox.size();i++){
             if(inbox.get(i).getLeft().compareTo(start) >=0 && inbox.get(i).getLeft().compareTo(end)<=0){

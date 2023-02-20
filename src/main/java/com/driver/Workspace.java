@@ -53,7 +53,6 @@ public class Workspace extends Gmail{
                 time_limit = endTimings.get(i).getLeft();
             }
         }
-
         return cnt;
     }
 }
